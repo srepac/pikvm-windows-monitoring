@@ -182,7 +182,7 @@ function fetchAndLog() {
         html += makeSpoilerTable("⚙️ CPU Load per Core", sorted);
       }
 
-      if (mems.length > 0) html += makeTable("<span style='position:relative; top:-4px;'>🝙</span> RAM Memory", mems);
+      if (mems.length > 0) html += makeTable("<span style='position:relative; top:-3px;'>🝙</span> RAM Memory", mems);
 
       if (disks.length > 0) {
         disks.forEach(disk => {
@@ -222,7 +222,7 @@ function fetchAndLog() {
 	  summarySpan.style.fontWeight = "bold";
       if (summarySpan) {
         summarySpan.textContent = `🌡️ ${coreAverageVal || "?"} ⚙️ ${cpuTotalVal || "?"}`;
-		//summarySpan.textContent = `🌡️ ${coreAverageVal || "?"} | ⚙️ ${cpuTotalVal || "?"} | <span style='position:relative; top:-4px;'>🝙</span> ${memUsedVal || "?"}`;
+		//summarySpan.textContent = `🌡️ ${coreAverageVal || "?"} | ⚙️ ${cpuTotalVal || "?"} | <span style='position:relative; top:-3px;'>🝙</span> ${memUsedVal || "?"}`;
       }
     })
     .catch(err => {
