@@ -11,6 +11,7 @@ function fetchAndLog() {
       const gpus = [];
 
       let coreAverageVal = "";
+      let cpuCoresVal = "";
       let cpuTotalVal = "";
       let memUsedVal = "";
 
@@ -76,6 +77,9 @@ function fetchAndLog() {
             }
           } else if (/^CPU Core #\d+$/.test(text)) {
             tempsCores.push({ text, value, min, max });
+          } else if (/CPU Cores/.test(text)) {
+			temps.unshift({ text, value, min, max });
+            cpuCoresVal = value;
           }
         }
 		
@@ -221,16 +225,14 @@ function fetchAndLog() {
       const summarySpan = document.querySelector("#monitor-menu-button span");
 	  summarySpan.style.fontWeight = "bold";
       if (summarySpan) {
-        summarySpan.textContent = `🌡️ ${coreAverageVal || "?"} ⚙️ ${cpuTotalVal || "?"}`;
-		//summarySpan.textContent = `🌡️ ${coreAverageVal || "?"} | ⚙️ ${cpuTotalVal || "?"} | <span style='position:relative; top:-3px;'>🝙</span> ${memUsedVal || "?"}`;
+        summarySpan.textContent = `🌡️ ${coreAverageVal || cpuCoresVal || "?"} ⚙️ ${cpuTotalVal || "?"}`;
+		//summarySpan.textContent = `🌡️ ${coreAverageVal || cpuCoresVal || "?"} | ⚙️ ${cpuTotalVal || "?"} | <span style='position:relative; top:-3px;'>🝙</span> ${memUsedVal || "?"}`;
       }
     })
     .catch(err => {
       console.log(`❌ JSON error: ${err.message}`);
     });
 }
-
-
 
  setInterval(fetchAndLog, 1000);
 
