@@ -74,9 +74,8 @@ and i add after  ```<li class="right feature-disabled" id="gpio-dropdown">...</l
 
 # nb, if you cannot have access to http://yourip:8085/data.json on pikvm, it's because your windows firewall blocked the port, add exception for this port on your firewall
 visual : 
-![demo monitor info pikvm](https://github.com/user-attachments/assets/0bc4a5b9-cc20-4e41-979f-38033e08960b)
 
-
+![demo monitor info pikvm](https://github.com/user-attachments/assets/430f482b-bb53-42ac-ae81-c3ce247580fb)
 
 
 
