@@ -71,3 +71,11 @@ and i add after  ```<li class="right feature-disabled" id="gpio-dropdown">...</l
       <div class="menu" id="monitor-menu"></div>
     </li>
 ```
+
+visual : 
+![demo monitor info pikvm](https://github.com/user-attachments/assets/0bc4a5b9-cc20-4e41-979f-38033e08960b)
+
+
+
+
+
