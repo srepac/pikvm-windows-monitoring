@@ -139,31 +139,33 @@ function fetchAndLog() {
       const openSummaries = Array.from(document.querySelectorAll("#monitor-menu details[open] > summary"))
         .map(summary => summary.textContent.trim());
 
-      function makeTable(title, entries, headers = ["Name", "Current", "Min", "Max"]) {
-        let html = `<h3 style="margin-top:10px;">${title}</h3>`;
-        html += `<table style="width:100%; border-collapse:collapse; margin-bottom:10px;">
-        <tr>${headers.map(h => `<th style="border:1px solid #ccc; text-align:left; padding:4px;">${h}</th>`).join("")}</tr>`;
-        entries.forEach(e => {
-          html += `<tr>
-            <td style="border:1px solid #ccc; padding:4px;">${e.text}</td>
-            <td style="border:1px solid #ccc; padding:4px;">${e.value}</td>
-            <td style="border:1px solid #ccc; padding:4px;">${e.min}</td>
-            <td style="border:1px solid #ccc; padding:4px;">${e.max}</td>
-          </tr>`;
-        });
-        html += `</table>`;
-        return html;
-      }
+    function makeTable(title, entries, headers = ["Name", "Current", "Min", "Max"]) {
+	  let html = `<h3 style="margin-top:10px; color:#f0f0f0; font-family:'Segoe UI',sans-serif;">${title}</h3>`;
+	  html += `<table style="width:100%; border-collapse:collapse; margin-bottom:10px; font-family:'Segoe UI',sans-serif; font-size:14px; background-color:#1e1e1e; color:#f0f0f0; border:1px solid #333;">`;
+	  html += `<thead><tr>${headers.map(h =>
+		`<th style="background-color:#2d2d2d; color:#ffffff; text-align:left; padding:8px 12px; border-bottom:1px solid #333;">${h}</th>`
+	  ).join("")}</tr></thead><tbody>`;
+	  entries.forEach(e => {
+		html += `<tr style="border-bottom:1px solid #333;">` +
+		  `<td style="padding:8px 12px; border-bottom:1px solid #333;font-weight: bold;">${e.text}</td>` +
+		  `<td style="padding:8px 12px; border-bottom:1px solid #333; color:#1abc9c;font-weight: bold;">${e.value}</td>` +
+		  `<td style="padding:8px 12px; border-bottom:1px solid #333; color:#f39c12;">${e.min}</td>` +
+		  `<td style="padding:8px 12px; border-bottom:1px solid #333; color:#e74c3c;">${e.max}</td>` +
+		`</tr>`;
+	  });
+	  html += `</tbody></table>`;
+	  return html;
+	}
 
-      function makeSpoilerTable(summary, entries) {
-        const isOpen = openSummaries.includes(summary);
-        return `<details${isOpen ? " open" : ""} style="margin-top:10px;">
-<summary style="cursor:pointer;">${summary}</summary>
-<div class="spoiler">
-  ${makeTable("", entries)}
-</div>
-</details>`;
-      }
+    function makeSpoilerTable(summary, entries) {
+	  const isOpen = openSummaries.includes(summary);
+	  return `<details${isOpen ? " open" : ""} style="margin-top:10px; color:#f0f0f0;">
+	<summary style="cursor:pointer; padding:4px 0; font-weight:bold;">${summary}</summary>
+	<div class="spoiler">
+	  ${makeTable("", entries)}
+	</div>
+	</details>`;
+	}
 
       let html = "";
 
@@ -217,6 +219,7 @@ function fetchAndLog() {
 	  
       // 🟡 Update summary value (Core Avg, CPU Total, Memory Used)
       const summarySpan = document.querySelector("#monitor-menu-button span");
+	  summarySpan.style.fontWeight = "bold";
       if (summarySpan) {
         summarySpan.textContent = `🌡️ ${coreAverageVal || "?"} ⚙️ ${cpuTotalVal || "?"}`;
 		//summarySpan.textContent = `🌡️ ${coreAverageVal || "?"} | ⚙️ ${cpuTotalVal || "?"} | <span style='position:relative; top:-4px;'>🝙</span> ${memUsedVal || "?"}`;
@@ -230,3 +233,4 @@ function fetchAndLog() {
 
 
  setInterval(fetchAndLog, 1000);
+
