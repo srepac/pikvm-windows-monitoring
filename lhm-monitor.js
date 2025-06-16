@@ -78,7 +78,7 @@ function fetchAndLog() {
           } else if (/^CPU Core #\d+$/.test(text)) {
             tempsCores.push({ text, value, min, max });
           } else if (/CPU Cores/.test(text)) {
-			temps.unshift({ text, value, min, max });
+            temps.unshift({ text, value, min, max });
             cpuCoresVal = value;
           }
         }
