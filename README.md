@@ -13,9 +13,13 @@ vi /usr/local/bin/poll-lhm.sh
 add this content: 
 ```
 #!/bin/bash
+# number of seconds for next poll
+SECS=5
+# IP of windows target PC
+WINIP="192.168.1.19"
 
 # url for libreHardwareMonitor
-URL="http://192.168.1.19:8085/data.json"
+URL="http://${WINIP}:8085/data.json"
 TMP_FILE="/tmp/lhm-data.json"
 
 while true; do
@@ -33,7 +37,7 @@ create service
 
 ```vi /etc/systemd/system/poll-lhm.service```
 
-add this content
+with the following content
 ```
 [Unit]
 Description=Poll LibreHardwareMonitor JSON and write to KVMD
@@ -49,7 +53,7 @@ WantedBy=multi-user.target
 ```
 
 
-run this commands :
+run these commands to start the poll-lhm service:
 ```
 systemctl daemon-reexec
 systemctl daemon-reload
@@ -57,19 +61,20 @@ systemctl enable --now poll-lhm.service
 ```
 
 
-# step 4 : js file
-copy the js file into the kvmd web repo: 
+# step 4 : Copy the js file into the kvmd web repo: 
 ```/usr/share/kvmd/web/share/js/lhm-monitor.js```
 
-# step 5 : i modify the /usr/share/kvmd/web/kvm/index.html
-in header section i add line 54 : 
+# step 5 : Modify the /usr/share/kvmd/web/kvm/index.html
+in header section, add line 54 : 
 ```<script src="../share/js/lhm-monitor.js"></script>```
 
-and i add after  ```<li class="right feature-disabled" id="gpio-dropdown">...</li>``` this : 
+and add after  
 ```
-    <li class="right" id="monitor-dropdown"><a class="menu-button" id="monitor-menu-button" href="#"><span></span></a>
-      <div class="menu" id="monitor-menu"></div>
-    </li>
+<li class="right feature-disabled" id="gpio-dropdown">...</li>``` this : 
+```
+      <li class="right" id="monitor-dropdown"><a class="menu-button" id="monitor-menu-button" href="#"><span></span></a>
+        <div class="menu" id="monitor-menu"></div>
+      </li>
 ```
 
 # NOTE:  if you cannot have access to http://yourip:8085/data.json on pikvm, it's because your windows firewall blocked the port, add exception for this port on your firewall
