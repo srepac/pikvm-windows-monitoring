@@ -77,7 +77,7 @@ and add after
       </li>
 ```
 
-# NOTE:  if you cannot have access to http://yourip:8085/data.json on pikvm, it's because your windows firewall blocked the port, add exception for this port on your firewall
+# nb,  if you cannot have access to http://yourip:8085/data.json on pikvm, it's because your windows firewall blocked the port, add exception for this port on your firewall
 
 visual : 
 
