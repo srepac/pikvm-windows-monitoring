@@ -63,7 +63,7 @@ i put the js file in the repo into :
 in header section i add line 54 : 
 ```<script src="../share/js/lhm-monitor.js"></script>```
 
-and i add after  <li class="right feature-disabled" id="gpio-dropdown">...</li> this : 
+and i add after  ```<li class="right feature-disabled" id="gpio-dropdown">...</li>``` this : 
 ```
     <li class="right" id="monitor-dropdown"><a class="menu-button" id="monitor-menu-button" href="#"><span></span></a>
       <div class="menu" id="monitor-menu"></div>
