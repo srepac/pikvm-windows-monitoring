@@ -19,7 +19,9 @@ URL="http://192.168.1.19:8085/data.json"
 TMP_FILE="/tmp/lhm-data.json"
 
 while true; do
-    curl -s "$URL" -o "$TMP_FILE"
+    if curl -s --fail --connect-timeout 1 --max-time 2 "$URL" -o "${TMP_FILE}.tmp"; then
+        mv "${TMP_FILE}.tmp" "$TMP_FILE"
+    fi
     sleep 1
 done
 ```
