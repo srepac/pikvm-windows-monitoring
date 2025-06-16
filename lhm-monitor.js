@@ -10,11 +10,14 @@ function fetchAndLog() {
       const disks = [];
       const gpus = [];
 
+      let pcNameVal = "";
+      let mainboardNameVal = "";
+      let cpuNameVal = "";
       let coreAverageVal = "";
       let cpuCoresVal = "";
       let cpuTotalVal = "";
       let memUsedVal = "";
-
+		
       function extractGpuInfo(node, gpuName, memoryFallback) {
         if (!node || typeof node !== "object") return;
 
@@ -64,7 +67,16 @@ function fetchAndLog() {
         const max = node.Max || "";
         const image = node.ImageURL || "";
         const sensorId = node.SensorId || "";
-
+		
+		if (image === "images_icon/computer.png") {
+			pcNameVal = text;
+		}
+		if (image === "images_icon/mainboard.png") {
+			mainboardNameVal = text;
+		}
+		if (image === "images_icon/cpu.png") {
+			cpuNameVal = text;
+		}
         // 🌡️ CPU temperature
         if (type === "Temperature") {
           if (/Core (Max|Average)/.test(text)) {
@@ -78,7 +90,7 @@ function fetchAndLog() {
           } else if (/^CPU Core #\d+$/.test(text)) {
             tempsCores.push({ text, value, min, max });
           } else if (/CPU Cores/.test(text)) {
-            temps.unshift({ text, value, min, max });
+			temps.unshift({ text, value, min, max });
             cpuCoresVal = value;
           }
         }
@@ -144,7 +156,7 @@ function fetchAndLog() {
         .map(summary => summary.textContent.trim());
 
     function makeTable(title, entries, headers = ["Name", "Current", "Min", "Max"]) {
-	  let html = `<h3 style="margin-top:10px; color:#f0f0f0; font-family:'Segoe UI',sans-serif;">${title}</h3>`;
+	  let html = makeTitle(title);
 	  html += `<table style="width:100%; border-collapse:collapse; margin-bottom:10px; font-family:'Segoe UI',sans-serif; font-size:14px; background-color:#1e1e1e; color:#f0f0f0; border:1px solid #333;">`;
 	  html += `<thead><tr>${headers.map(h =>
 		`<th style="background-color:#2d2d2d; color:#ffffff; text-align:left; padding:8px 12px; border-bottom:1px solid #333;">${h}</th>`
@@ -160,6 +172,54 @@ function fetchAndLog() {
 	  html += `</tbody></table>`;
 	  return html;
 	}
+	
+	function makeInfos(title, pcName, mainboardName,cpuName) {
+		headers = ["Component", "Name"]
+		headers = ["Component", "Name"]
+		<!-- headerPC = "PC"; -->
+		<!-- headerMain = "Mainboard"; -->
+		<!-- headers = []; -->
+		<!-- if (pcName.length > 0) { -->
+			<!-- headers.push(headerPC); -->
+		<!-- } -->
+		<!-- if (mainboardName.length > 0) { -->
+			<!-- headers.push(headerMain); -->
+		<!-- } -->
+		let html = '';
+		html = makeTitle(title);
+		html += `<table style="width:100%; border-collapse:collapse; margin-bottom:10px; font-family:'Segoe UI',sans-serif; font-size:14px; background-color:#1e1e1e; color:#f0f0f0; border:1px solid #333;">`;
+		html += `<thead><tr>${headers.map(h =>
+		`<th style="background-color:#2d2d2d; color:#ffffff; text-align:left; padding:8px 12px; border-bottom:1px solid #333;">${h}</th>`
+		).join("")}</tr></thead><tbody>`;
+		if (pcName.length > 0) {
+			html += `<tr style="border-bottom:1px solid #333;">`;
+			html += `<td style="padding:8px 12px; border-bottom:1px solid #333;font-weight: bold;">Computer</td>`;
+			html += `<td style="padding:8px 12px; border-bottom:1px solid #333;color: #00d9ff;font-weight: bold;">${pcName}</td>`;
+			html += `</tr>`;
+		}
+		if (mainboardName.length > 0) {
+			html += `<tr style="border-bottom:1px solid #333;">`;
+			html += `<td style="padding:8px 12px; border-bottom:1px solid #333;font-weight: bold;">Mainboard</td>`;
+			html += `<td style="padding:8px 12px; border-bottom:1px solid #333;color: #00d9ff;font-weight: bold;">${mainboardName}</td>`;
+			html += `</tr>`;
+		}
+		if (cpuName.length > 0) {
+			html += `<tr style="border-bottom:1px solid #333;">`;
+			html += `<td style="padding:8px 12px; border-bottom:1px solid #333;font-weight: bold;">CPU</td>`;
+			html += `<td style="padding:8px 12px; border-bottom:1px solid #333;color: #00d9ff;font-weight: bold;">${cpuName}</td>`;
+			html += `</tr>`;
+		}
+		html += `</tbody></table>`;
+
+	 
+	  console.log(html);
+	  return html;
+	}
+	
+	function makeTitle(title) {
+	  let html = `<h3 style="margin-top:10px; color:#f0f0f0; font-family:'Segoe UI',sans-serif;">${title}</h3>`;
+	  return html;
+	}
 
     function makeSpoilerTable(summary, entries) {
 	  const isOpen = openSummaries.includes(summary);
@@ -170,13 +230,27 @@ function fetchAndLog() {
 	</div>
 	</details>`;
 	}
+    function makeButtonTable(temp, load) {
+	  let html = '';
+	  html += `<table style="border-collapse: collapse;font-weight: bold;margin-top: 8px;display: flex;">`;
+	  html += `<tbody><tr>`;
+	  html += `<td style="padding-right: 2px;line-height: 18px;text-align: center;">🌡️</td>`;
+	  html += `<td style="line-height: 18px;text-align: center;">${temp}</td>`;
+	  html += `</tr>`;
+	  html += `<tr>`;
+	  html += `<td style="padding-right: 2px;line-height: 18px;text-align: center;">⚙️</td>`;
+	  html += `<td style="line-height: 18px;text-align: center;">${load}</td>`;
+	  html += `</tr>`;
+	  html += `</tbody></table>`;
+	  return html;
+	}
 
       let html = "";
-
-      if (temps.length > 0) html += makeTable("🌡️ CPU Temperature (Average / Max)", temps);
+      html += makeInfos("💻 Computer Infos", pcNameVal, mainboardNameVal, cpuNameVal);
+      if (temps.length > 0) html += makeTable("🌡️ CPU Temperature", temps);
       if (tempsCores.length > 0) html += makeSpoilerTable("🌡️ CPU Temperature per Core", tempsCores);
 
-      if (loads.length > 0) html += makeTable("⚙️ CPU Load (Total / Max)", loads);
+      if (loads.length > 0) html += makeTable("⚙️ CPU Load", loads);
       if (loadsCores.length > 0) {
         const sorted = loadsCores.sort((a, b) => {
           const aNum = parseInt(a.text.match(/\d+/)?.[0] || "0");
@@ -225,7 +299,8 @@ function fetchAndLog() {
       const summarySpan = document.querySelector("#monitor-menu-button span");
 	  summarySpan.style.fontWeight = "bold";
       if (summarySpan) {
-        summarySpan.textContent = `🌡️ ${coreAverageVal || cpuCoresVal || "?"} ⚙️ ${cpuTotalVal || "?"}`;
+        summarySpan.innerHTML = makeButtonTable(coreAverageVal || cpuCoresVal || "?", cpuTotalVal || "?");
+        // summarySpan.textContent = `🌡️ ${coreAverageVal || cpuCoresVal || "?"} ⚙️ ${cpuTotalVal || "?"}`;
 		//summarySpan.textContent = `🌡️ ${coreAverageVal || cpuCoresVal || "?"} | ⚙️ ${cpuTotalVal || "?"} | <span style='position:relative; top:-3px;'>🝙</span> ${memUsedVal || "?"}`;
       }
     })
