@@ -13,11 +13,12 @@ ln -sf /tmp/lhm-data.json /usr/share/kvmd/web/share/data.json
 
 # make a backup of index.html
 cp /usr/share/kvmd/web/kvm/index.html /usr/share/kvmd/web/kvm/index.html.prewinmonitor
+
+tar xvf $TARFILE -C /
+
 # copy the correct index.html based on which os-release is running
 OSVERSION=$( grep ^ID= /etc/os-release | cut -d= -f2 )
 cp /usr/share/kvmd/web/kvm/index.html.$OSVERSION /usr/share/kvmd/web/kvm/index.html
-
-tar xvf $TARFILE -C /
 
 echo "Please change WEBIP= line to reflect your windows target PC IP address."
 $EDITOR /usr/local/bin/poll-lhm.sh
