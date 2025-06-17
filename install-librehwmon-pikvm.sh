@@ -14,6 +14,7 @@ ln -sf /tmp/lhm-data.json /usr/share/kvmd/web/share/data.json
 # make a backup of index.html
 cp /usr/share/kvmd/web/kvm/index.html /usr/share/kvmd/web/kvm/index.html.prewinmonitor
 
+# extract contents of tar file
 tar xvf $TARFILE -C /
 
 # copy the correct index.html based on which os-release is running
