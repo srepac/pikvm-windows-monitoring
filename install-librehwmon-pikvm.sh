@@ -19,6 +19,7 @@ tar xvf $TARFILE -C /
 
 # copy the correct index.html based on which os-release is running
 OSVERSION=$( grep ^ID= /etc/os-release | cut -d= -f2 )
+if [[ "$OSVERSION" == "debian" ]]; then OSVERSION=ubuntu; fi  # force debian OS to use the ubuntu version of .html
 cp /usr/share/kvmd/web/kvm/index.html.$OSVERSION /usr/share/kvmd/web/kvm/index.html
 
 echo "Please change WEBIP= line to reflect your windows target PC IP address."
