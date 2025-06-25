@@ -77,6 +77,7 @@ function fetchAndLog() {
 		if (image === "images_icon/cpu.png") {
 			cpuNameVal = text;
 		}
+	      
         // 🌡️ CPU temperature
         if (type === "Temperature") {
           if (/Core (Max|Average)/.test(text)) {
@@ -90,7 +91,18 @@ function fetchAndLog() {
           } else if (/^CPU Core #\d+$/.test(text)) {
             tempsCores.push({ text, value, min, max });
           } else if (/CPU Cores/.test(text)) {
-			temps.unshift({ text, value, min, max });
+            temps.unshift({ text, value, min, max });
+            cpuCoresVal = value;
+          } else if (/Core/.test(text)) {        // support more AMD CPU (e.g. Ryzen 2200G)
+            const entry = ({ text, value, min, max });
+            if (text === "Core (Tctl/Tdie)") {
+              temps.unshift(entry);   // insert Core Tctl/Tdie at the beginning
+              coreAverageVal = value;
+            } else {
+              temps.push(entry);
+            }
+          } else if (/GFX/.test(text)) {        // AMD G series CPUs also include GFX temp
+            temps.unshift({ text, value, min, max });
             cpuCoresVal = value;
           }
         }
